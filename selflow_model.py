@@ -110,7 +110,7 @@ class SelFlowModel(object):
         sess.run(iterator.initializer) 
         saver.restore(sess, restore_model)
 
-        ExportModel=True
+        ExportModel=False
         if ExportModel:
             # Export checkpoint to SavedModel
             export_dir = os.path.join(os.path.dirname(restore_model), 'SavedModel')
