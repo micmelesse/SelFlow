@@ -109,6 +109,19 @@ class SelFlowModel(object):
         sess.run(tf.global_variables_initializer()) 
         sess.run(iterator.initializer) 
         saver.restore(sess, restore_model)
+
+        ExportModel=True
+        if ExportModel:
+            # Export checkpoint to SavedModel
+            export_dir = os.path.join(os.path.dirname(restore_model), 'SavedModel')
+
+            builder = tf.saved_model.builder.SavedModelBuilder(export_dir)
+            builder.add_meta_graph_and_variables(sess,
+                                                [tf.saved_model.tag_constants.TRAINING, tf.saved_model.tag_constants.SERVING],
+                                                strip_default_attrs=True)
+            builder.save()
+
+
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)           
         for i in range(dataset.data_num):
